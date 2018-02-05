@@ -8,8 +8,16 @@ const reducer = (state = { books: [] }, action) => {
     // case 'DECREMENT':
     //   return state - action.payload 
     case 'POST_BOOK':
- 
       return { books: [...state.books, action.payload] }
+    case 'DELETE_BOOK':
+      return { books: [...state.books].filter(({id}) => id !== action.payload.id) }
+    case 'UPDATE_BOOK':
+      return {
+        books: [...state.books].map((book, {id}) => id === action.payload.id
+          ? { ...book, title: action.payload.title }
+          : book
+        )
+      }  
     break  
   }
   return state
@@ -48,6 +56,21 @@ store.dispatch({
     title: 'this is the second book title',
     description: 'this is the book description',
     price: 45.25
+  }
+})
+
+// DELETE a book
+store.dispatch({
+  type: 'DELETE_BOOK',
+  payload: { id: 1 }
+})
+
+// UPDATE a book
+store.dispatch({
+  type: 'UPDATE_BOOK',
+  payload: {
+    id: 2,
+    title: 'New title for the second book'
   }
 })
 

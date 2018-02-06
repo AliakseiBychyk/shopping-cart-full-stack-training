@@ -13,7 +13,7 @@ const reducer = (state = { books: [] }, action) => {
       return { books: [...state.books].filter(({id}) => id !== action.payload.id) }
     case 'UPDATE_BOOK':
       return {
-        books: [...state.books].map((book, {id}) => id === action.payload.id
+        books: [...state.books].map(book => book.id === action.payload.id
           ? { ...book, title: action.payload.title }
           : book
         )

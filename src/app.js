@@ -25,30 +25,20 @@ render(
 )
 
 // STEP 2 create and dispatch actions
-store.dispatch(postBook({
-  id: 1,
-  title: 'This is the book title',
-  description: 'this is the book description',
-  price: 33.33
-}))
+// store.dispatch(postBook())
 
 // DISPATCH a second action
-store.dispatch(postBook({
-  id: 2,
-  title: 'This is the second book title',
-  description: 'this is the book description',
-  price: 45.25
-}))
+// store.dispatch(postBook())
 
 // DELETE a book
 // store.dispatch(deleteBook({ id: 1 }))
 
 // UPDATE a book
-store.dispatch(updateBook({
-  id: 2,
-  title: 'New title for the second book'
-}))
+// store.dispatch(updateBook({
+//   id: 2,
+//   title: 'New title for the second book'
+// }))
 
 // -->> CART ACTIONS <<--
 // ADD to cart
-store.dispatch(addToCart([{id: 2}]))
+// store.dispatch(addToCart([{id: 2}]))

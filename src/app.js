@@ -1,16 +1,21 @@
-import { createStore } from 'redux'
+import { applyMiddleware, createStore } from 'redux'
+import logger from 'redux-logger'
 import reducers from './reducers/index'
 import { addToCart } from './actions/cartActions'
 import { postBook, deleteBook, updateBook } from './actions/booksActions'
 
 
+
+const middleware = applyMiddleware(logger)
+
 // STEP 1 create the store
-const store = createStore(reducers,
-  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+const store = createStore(reducers, 
+  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
+  middleware
 )
-store.subscribe(() => {
-  console.log(`current state is `, store.getState())
-})
+// store.subscribe(() => {
+//   console.log(`current state is `, store.getState())
+// })
 
 // STEP 2 create and dispatch actions
 store.dispatch(postBook({

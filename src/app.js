@@ -1,10 +1,13 @@
-import { applyMiddleware, createStore } from 'redux'
-import logger from 'redux-logger'
 import React from 'react'
 import { render } from 'react-dom'
+import { Provider } from 'react-redux'
+import { applyMiddleware, createStore } from 'redux'
+import logger from 'redux-logger'
+
 import reducers from './reducers/index'
 import { addToCart } from './actions/cartActions'
 import { postBook, deleteBook, updateBook } from './actions/booksActions'
+
 import BooksList from './components/pages/BooksList'
 
 const middleware = applyMiddleware(logger)
@@ -16,17 +19,15 @@ const store = createStore(reducers,
 )
 
 render(
-  <BooksList />, document.getElementById('root')
+  <Provider store={store}>
+    <BooksList />
+  </Provider>, document.getElementById('root')
 )
-
-// store.subscribe(() => {
-//   console.log(`current state is `, store.getState())
-// })
 
 // STEP 2 create and dispatch actions
 store.dispatch(postBook({
   id: 1,
-  title: 'this is the book title',
+  title: 'This is the book title',
   description: 'this is the book description',
   price: 33.33
 }))
@@ -34,13 +35,13 @@ store.dispatch(postBook({
 // DISPATCH a second action
 store.dispatch(postBook({
   id: 2,
-  title: 'this is the second book title',
+  title: 'This is the second book title',
   description: 'this is the book description',
   price: 45.25
 }))
 
 // DELETE a book
-store.dispatch(deleteBook({ id: 1 }))
+// store.dispatch(deleteBook({ id: 1 }))
 
 // UPDATE a book
 store.dispatch(updateBook({

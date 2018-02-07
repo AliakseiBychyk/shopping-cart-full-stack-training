@@ -1,10 +1,11 @@
 import { applyMiddleware, createStore } from 'redux'
 import logger from 'redux-logger'
+import React from 'react'
+import { render } from 'react-dom'
 import reducers from './reducers/index'
 import { addToCart } from './actions/cartActions'
 import { postBook, deleteBook, updateBook } from './actions/booksActions'
-
-
+import BooksList from './components/pages/BooksList'
 
 const middleware = applyMiddleware(logger)
 
@@ -13,6 +14,11 @@ const store = createStore(reducers,
   window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
   middleware
 )
+
+render(
+  <BooksList />, document.getElementById('root')
+)
+
 // store.subscribe(() => {
 //   console.log(`current state is `, store.getState())
 // })
@@ -45,5 +51,3 @@ store.dispatch(updateBook({
 // -->> CART ACTIONS <<--
 // ADD to cart
 store.dispatch(addToCart([{id: 2}]))
-
-

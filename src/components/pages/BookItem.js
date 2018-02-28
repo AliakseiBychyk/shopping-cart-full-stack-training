@@ -1,7 +1,22 @@
 import React, { Component } from 'react'
 import { Well, Col, Row, Button } from 'react-bootstrap'
+import {connect} from 'react-redux'
+import {bindActionCreators} from 'redux'
+import {addToCart} from '../../actions/cartActions'
+import Cart from './Cart'
 
 class BookItem extends Component{
+  
+  handleCart = () => {
+    const book = [{
+      id: this.props.id,
+      title: this.props.title,
+      description: this.props.description,
+      price: this.props.price
+    }]
+    this.props.addToCart(book)
+  }
+
   render() {
     return (
       <Well>
@@ -10,7 +25,10 @@ class BookItem extends Component{
             <h2>{this.props.title}</h2>
             <h3>{this.props.description}</h3>
             <h3>$ {this.props.price}</h3>
-            <Button bsStyle="primary" >Buy now</Button>
+            <Button
+              onClick={this.handleCart} 
+              bsStyle="primary" 
+            >Buy not now</Button>
           </Col>
         </Row>
       </Well>
@@ -18,4 +36,10 @@ class BookItem extends Component{
   }
 }
 
-export default BookItem
+const mapStateToProps = state => ({
+  cart: state.cart.cart
+})
+
+const mapDispatchToProps = dispatch => bindActionCreators({ addToCart }, dispatch)
+
+export default connect(mapStateToProps, mapDispatchToProps)(BookItem)

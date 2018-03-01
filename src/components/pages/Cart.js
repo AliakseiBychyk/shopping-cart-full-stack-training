@@ -1,8 +1,16 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Panel, Col, Row, Well, Button, ButtonGroup, Label } from 'react-bootstrap'
+import { bindActionCreators } from 'redux'
+import { deleteCartItem } from '../../actions/cartActions'
 
 class Cart extends Component {
+
+  onDelete = id => {
+    console.log('this.props.cart', this.props.cart)
+    const cartAfterDelete = [...this.props.cart].filter(({_id}) => _id !== id) 
+    this.props.deleteCartItem(cartAfterDelete)
+  }
 
   renderCart = () => {
     const cartItemsList = this.props.cart.map(cartItem => ( 
@@ -22,7 +30,11 @@ class Cart extends Component {
               <Button bsStyle="default" bsSize="small">-</Button>
               <Button bsStyle="default" bsSize="small">+</Button>
               <span>     </span>
-              <Button bsStyle="danger" bsSize="small">DELETE</Button>
+              <Button
+                onClick={() => this.onDelete(cartItem._id)} 
+                bsStyle="danger" 
+                bsSize="small"
+              >DELETE</Button>
             </ButtonGroup>
           </Col>
         </Row>
@@ -47,4 +59,6 @@ const mapStateToProps = state => ({
   cart: state.cart.cart
 })
 
-export default connect(mapStateToProps)(Cart)
+const mapDispatchToProps = dispatch => bindActionCreators({ deleteCartItem }, dispatch)
+
+export default connect(mapStateToProps, mapDispatchToProps)(Cart)

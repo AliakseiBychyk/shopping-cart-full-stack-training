@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Panel, Col, Row, Well, Button, ButtonGroup, Label } from 'react-bootstrap'
 import { bindActionCreators } from 'redux'
-import { deleteCartItem } from '../../actions/cartActions'
+import { deleteCartItem, updateCart } from '../../actions/cartActions'
 
 class Cart extends Component {
 
@@ -10,6 +10,14 @@ class Cart extends Component {
     console.log('this.props.cart', this.props.cart)
     const cartAfterDelete = [...this.props.cart].filter(({_id}) => _id !== id) 
     this.props.deleteCartItem(cartAfterDelete)
+  }
+
+  onIncrement = _id => {
+    this.props.updateCart(_id, 1)
+  }
+
+  onDecrement = (_id, quantity) => {
+    if (quantity > 1) this.props.updateCart(_id, -1)
   }
 
   renderCart = () => {
@@ -23,12 +31,20 @@ class Cart extends Component {
             <h6>usd.{cartItem.price}</h6><span>    </span>
           </Col>
           <Col xs={12} sm={2}>
-            <h6>qty. <Label bsStyle="success"></Label></h6><span>    </span>
+            <h6>qty. <Label bsStyle="success">{cartItem.quantity}</Label></h6><span>    </span>
           </Col>
           <Col xs={6} sm={4}>
             <ButtonGroup style={{minWidth: '300px'}}>
-              <Button bsStyle="default" bsSize="small">-</Button>
-              <Button bsStyle="default" bsSize="small">+</Button>
+              <Button 
+                bsStyle="default" 
+                bsSize="small"
+                onClick={()=> this.onDecrement(cartItem._id, cartItem.quantity)}
+              >-</Button>
+              <Button 
+                bsStyle="default" 
+                bsSize="small"
+                onClick={()=> this.onIncrement(cartItem._id)}
+              >+</Button>
               <span>     </span>
               <Button
                 onClick={() => this.onDelete(cartItem._id)} 
@@ -59,6 +75,9 @@ const mapStateToProps = state => ({
   cart: state.cart.cart
 })
 
-const mapDispatchToProps = dispatch => bindActionCreators({ deleteCartItem }, dispatch)
+const mapDispatchToProps = dispatch => bindActionCreators({
+   deleteCartItem, 
+   updateCart 
+}, dispatch)
 
 export default connect(mapStateToProps, mapDispatchToProps)(Cart)
